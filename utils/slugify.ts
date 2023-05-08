@@ -1,5 +1,5 @@
 // Reference: https://gist.github.com/hagemann/382adfc57adbd5af078dc93feef01fe1
-export function slugify(str: string, id: string | number) {
+export function slugify(str: string, id?: string | number) {
   const a =
     "àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìıİłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;";
   const b =
@@ -17,6 +17,6 @@ export function slugify(str: string, id: string | number) {
       .replace(/\-\-+/g, "-") // Replace multiple - with single -
       .replace(/^-+/, "") // Trim - from start of text
       .replace(/-+$/, "") + // Trim - from end of text
-    `-${id}`
+    `-${id ?? ""}`
   );
 }
