@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import Navigation from "~/components/Navigation";
+import Navigation from "~/components/StoreNavigation";
 import prisma from "~/lib/prisma";
 
 async function getCategoriesForNavigation() {

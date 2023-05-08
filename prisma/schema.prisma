@@ -54,6 +54,8 @@ model Section {
   id        Int      @id @default(autoincrement())
   name      String
   slug      String   @unique
+  imageSrc  String?
+  imageAlt  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -65,17 +67,20 @@ model Section {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String?
-  image       String
-  gallery     String[] @default([])
-  price       Float
-  rawPrice    Float
-  discount    Int      @default(0)
-  rating      Float    @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  slug           String   @unique
+  name           String
+  description    String?
+  imageSrc       String
+  imageAlt       String
+  gallery        String[] @default([])
+  price          Float
+  rawPrice       Float
+  discount       Int      @default(0)
+  rating         Float    @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  isNowPromotion Boolean  @default(false)
 
   attributes Attribute[] @relation("ProductAttributes")
   reviews    Review[]    @relation("ProductReviews")
