@@ -10,6 +10,60 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  featured      Featured[]
+  sectionsGroup SectionGroup[]
+
+  @@map("category")
+}
+
+model Featured {
+  id        Int      @id @default(autoincrement())
+  name      String
+  slug      String   @unique
+  imageSrc  String
+  imageAlt  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products   Product[] @relation("ProductInFeatured")
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
+
+  @@map("featured")
+}
+
+model SectionGroup {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  categories Category[]
+  sections   Section[]
+
+  @@map("section_group")
+}
+
+model Section {
+  id        Int      @id @default(autoincrement())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products       Product[]     @relation("ProductInSection")
+  sectionGroup   SectionGroup? @relation(fields: [sectionGroupId], references: [id])
+  sectionGroupId Int?
+
+  @@map("section")
+}
+
 model Product {
   id          Int      @id @default(autoincrement())
   title       String
@@ -23,12 +77,11 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  attributes Attribute[]
-  reviews    Review[]
-  cart       Cart?       @relation(fields: [cartId], references: [id])
-  cartId     Int?
-  category   Category?   @relation(fields: [categoryId], references: [id])
-  categoryId Int?
+  attributes Attribute[] @relation("ProductAttributes")
+  reviews    Review[]    @relation("ProductReviews")
+  card       Cart[]      @relation("ProductsInCart")
+  sections   Section[]   @relation("ProductInSection")
+  featured   Featured[]  @relation("ProductInFeatured")
 
   @@map("product")
 }
@@ -36,11 +89,10 @@ model Product {
 model Attribute {
   id    Int    @id @default(autoincrement())
   name  String
-  slug  String
+  slug  String @unique
   value String
 
-  product   Product? @relation(fields: [productId], references: [id])
-  productId Int?
+  products Product[] @relation("ProductAttributes")
 
   @@map("attribute")
 }
@@ -53,24 +105,12 @@ model Review {
   rating    Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  product   Product @relation(name: "ProductReviews", fields: [productId], references: [id])
+  productId Int
   userId    String
 
-  product   Product? @relation(fields: [productId], references: [id])
-  productId Int?
-
   @@map("review")
-}
-
-model Category {
-  id        Int      @id @default(autoincrement())
-  name      String
-  slug      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  products Product[]
-
-  @@map("category")
 }
 
 model Cart {
@@ -79,7 +119,7 @@ model Cart {
   updatedAt DateTime @updatedAt
   userId    String
 
-  products Product[]
+  products Product[] @relation("ProductsInCart")
 
   @@map("cart")
 }

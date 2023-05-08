@@ -11,13 +11,18 @@ export const metadata = {
 
 export default function RootLayout({
   children,
+  header,
 }: {
   children: React.ReactNode;
+  header: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SupabaseProvider>{children}</SupabaseProvider>
+        <SupabaseProvider>
+          {header}
+          {children}
+        </SupabaseProvider>
       </body>
     </html>
   );
