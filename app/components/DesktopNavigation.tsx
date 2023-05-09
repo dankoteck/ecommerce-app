@@ -7,13 +7,13 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
-import { CategoriesNavigation } from "~/types/categories";
+import { Navigation } from "~/types/navigation";
 import { getClassNames } from "~/utils";
-import AdvertisingBanner from "../AdvertisingBanner";
+import AdvertisingBanner from "./AdvertisingBanner";
 
 type Props = {
   setOpen: (open: boolean) => void;
-  categories: CategoriesNavigation;
+  categories: Navigation;
 };
 
 export default function DesktopNavigation({ setOpen, categories }: Props) {

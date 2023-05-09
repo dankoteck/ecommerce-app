@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { CategoriesNavigation } from "~/types/categories";
-import { default as DesktopNavigation } from "./Desktop";
-import { default as MobileNavigation } from "./Mobile";
+import { Navigation } from "~/types/navigation";
+import DesktopNavigation from "./DesktopNavigation";
+import MobileNavigation from "./MobileNavigation";
 
 type Props = {
-  categories: CategoriesNavigation;
+  categories: Navigation;
 };
 
 export default function Navigation({ categories }: Props) {

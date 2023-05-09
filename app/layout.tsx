@@ -12,9 +12,11 @@ export const metadata = {
 export default function RootLayout({
   children,
   header,
+  footer,
 }: {
   children: React.ReactNode;
   header: React.ReactNode;
+  footer: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -22,6 +24,7 @@ export default function RootLayout({
         <SupabaseProvider>
           {header}
           {children}
+          {footer}
         </SupabaseProvider>
       </body>
     </html>

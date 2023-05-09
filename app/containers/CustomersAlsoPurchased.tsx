@@ -1,7 +1,7 @@
-import prisma from "~/lib/prisma";
-import Slider from "./Slider";
-import { Product } from "@prisma/client";
 import Link from "next/link";
+import { Product } from "@prisma/client";
+import ProductSlider from "./ProductsSlider";
+import { prisma } from "~/lib/prisma";
 
 async function getProductSlides(): Promise<Product[]> {
   // TODO: replace with API get list products has most rating
@@ -16,7 +16,7 @@ export default async function CustomersAlsoPurchased() {
   const slides = await getProductSlides();
 
   return (
-    <div className="max-w-2xl px-4 pb-16 mx-auto sm:px-6 sm:pb-24 lg:max-w-7xl lg:px-8">
+    <div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <h2 className="sr-only">Customers also purchased</h2>
       <div className="flex items-center justify-between w-full mb-8">
         <p className="text-2xl">Customers also purchased</p>
@@ -28,7 +28,7 @@ export default async function CustomersAlsoPurchased() {
         </Link>
       </div>
 
-      <Slider items={slides} />
+      <ProductSlider showProductRating={false} items={slides} />
     </div>
   );
 }

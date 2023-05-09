@@ -1,5 +1,5 @@
 import Image from "next/image";
-import prisma from "~/lib/prisma";
+import { prisma } from "~/lib/prisma";
 
 async function getPromotionProducts() {
   try {
@@ -17,6 +17,8 @@ async function getPromotionProducts() {
 
 export default async function PromoSection() {
   const promotionProducts = await getPromotionProducts();
+
+  // Grouped promotion products for ease to render
   const groupPromotionProducts = [
     promotionProducts.slice(0, 2),
     promotionProducts.slice(2, 5),
@@ -24,11 +26,11 @@ export default async function PromoSection() {
   ];
 
   return (
-    <div className="relative px-8 py-24 overflow-hidden bg-slate-50">
+    <div className="relative px-8 py-16 overflow-hidden border-b -z-10 bg-slate-50 border-b-slate-200">
       <div className="pt-16 pb-80 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
         <div className="relative px-4 mx-auto max-w-7xl sm:static sm:px-6 lg:px-8">
           <div className="sm:max-w-lg">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 font sm:text-6xl">
+            <h1 className="!text-4xl font-bold tracking-tight text-gray-900 font sm:text-6xl">
               We ship over 45 million products around the world.
             </h1>
             <p className="mt-4 text-xl text-gray-500">
@@ -44,15 +46,19 @@ export default async function PromoSection() {
               >
                 <div className="absolute transform sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
                   <div className="flex items-center space-x-6 lg:space-x-8">
-                    {groupPromotionProducts.map((products, index) => (
+                    {groupPromotionProducts.map((products, groupIndex) => (
                       <div
-                        key={index}
+                        key={groupIndex}
                         className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8"
                       >
-                        {products.map((product) => (
+                        {products.map((product, productIndex) => (
                           <div
                             key={product.imageAlt}
-                            className="relative h-64 overflow-hidden rounded-lg w-44 lg:opacity-100"
+                            className={`${
+                              groupIndex === 0 && productIndex === 0
+                                ? "sm:opacity-0"
+                                : ""
+                            } relative aspect-w-1 aspect-h-1 h-64 overflow-hidden rounded-lg w-44 lg:opacity-100`}
                           >
                             <Image
                               fill
@@ -71,7 +77,7 @@ export default async function PromoSection() {
 
               <a
                 href="#"
-                className="inline-block px-8 py-3 font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700"
+                className="!relative inline-block px-8 py-3 font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700"
               >
                 Shop New Arrivals
               </a>

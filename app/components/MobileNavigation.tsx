@@ -19,13 +19,13 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
-import { CategoriesNavigation } from "~/types/categories";
+import { Navigation } from "~/types/navigation";
 import { getClassNames } from "~/utils";
 
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  categories: CategoriesNavigation;
+  categories: Navigation;
 };
 
 export default function MobileNavigation({ open, setOpen, categories }: Props) {

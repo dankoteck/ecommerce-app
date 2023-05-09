@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
-import Navigation from "~/components/StoreNavigation";
-import prisma from "~/lib/prisma";
+import Navigation from "../components/Header";
+import { prisma } from "~/lib/prisma";
 
 async function getCategoriesForNavigation() {
   const categories = await prisma.category.findMany({

@@ -1,13 +1,12 @@
 import { Product } from "@prisma/client";
 import Link from "next/link";
 
-import prisma from "~/lib/prisma";
-import ProductItem from "./ProductItem";
+import { prisma } from "~/lib/prisma";
+import ProductItem from "../components/ProductItem";
 
 async function getSaleOffProducts(): Promise<Product[]> {
   const products = await prisma.product.findMany({
     where: { discount: { gt: 0 } },
-    take: 9,
   });
   return products;
 }

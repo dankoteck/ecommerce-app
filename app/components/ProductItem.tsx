@@ -7,9 +7,14 @@ import Rating from "./Rating";
 type Props = {
   item: Product;
   bordered?: boolean;
+  showRating?: boolean;
 };
 
-export default function ProductItem({ item, bordered }: Props) {
+export default function ProductItem({
+  item,
+  bordered,
+  showRating = true,
+}: Props) {
   return (
     <Link
       href={`/product/${item.slug}`}
@@ -53,10 +58,12 @@ export default function ProductItem({ item, bordered }: Props) {
         </div>
 
         {/* Rating */}
-        <div className="flex items-center">
-          <span className="mr-1">{item.rating}</span>
-          <Rating condense />
-        </div>
+        {showRating && (
+          <div className="flex items-center">
+            <span className="mr-1">{item.rating}</span>
+            <Rating condense />
+          </div>
+        )}
       </div>
     </Link>
   );
