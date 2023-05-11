@@ -1,19 +1,22 @@
-import { prisma } from "~/lib/prisma";
-import { Product, Section } from "@prisma/client";
-import Link from "next/link";
-import ProductSlider from "./ProductsSlider";
+import { Prisma, Product, Section } from "@prisma/client";
 import Image from "next/image";
+import Link from "next/link";
+import { prisma } from "~/lib/prisma";
+import ProductsSlider from "./ProductsSlider";
 
-async function getWeekendSales(): Promise<{
-  products: Product[];
-  sections: Section[];
-}> {
+async function getWeekendSales() {
   // TODO: replace with API get list weekend sale
   const sections = await prisma.section.findMany({
     where: {
       slug: {
         startsWith: "women",
       },
+    },
+    select: {
+      id: true,
+      slug: true,
+      imageAlt: true,
+      imageSrc: true,
     },
     take: 3,
   });
@@ -29,13 +32,29 @@ async function getWeekendSales(): Promise<{
         },
       },
     },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      imageSrc: true,
+      imageAlt: true,
+      description: true,
+      rawPrice: true,
+      discount: true,
+      rating: true,
+      price: true,
+      reviews: true,
+    },
   });
 
   return { products, sections };
 }
 
 export default async function WeekendSale() {
-  const { products, sections } = await getWeekendSales();
+  const {
+    products,
+    sections,
+  }: Prisma.PromiseReturnType<typeof getWeekendSales> = await getWeekendSales();
 
   return (
     <section
@@ -48,7 +67,7 @@ export default async function WeekendSale() {
           <p className="text-2xl">Weekend Sale</p>
 
           {/* CTA */}
-          <Link href="/" className="text-sky-600">
+          <Link href="/" className="hidden sm:block text-sky-600">
             Hot Deal right here
             <span aria-hidden="true"> →</span>
           </Link>
@@ -76,7 +95,12 @@ export default async function WeekendSale() {
           ))}
         </div>
 
-        <ProductSlider showProductRating={false} items={products} />
+        <ProductsSlider items={products} />
+
+        <Link href="/" className="block pt-4 text-right sm:hidden text-sky-600">
+          Hot Deal right here
+          <span aria-hidden="true"> →</span>
+        </Link>
       </div>
     </section>
   );

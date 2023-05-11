@@ -9,7 +9,7 @@ type Props = {
   categories: Navigation;
 };
 
-export default function Navigation({ categories }: Props) {
+export default function Header({ categories }: Props) {
   const [open, setOpen] = useState(false);
 
   return (

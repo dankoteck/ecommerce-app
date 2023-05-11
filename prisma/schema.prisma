@@ -84,7 +84,7 @@ model Product {
 
   attributes Attribute[] @relation("ProductAttributes")
   reviews    Review[]    @relation("ProductReviews")
-  card       Cart[]      @relation("ProductsInCart")
+  cart       Cart[]      @relation("ProductsInCart")
   sections   Section[]   @relation("ProductInSection")
   featured   Featured[]  @relation("ProductInFeatured")
 

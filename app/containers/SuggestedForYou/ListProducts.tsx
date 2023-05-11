@@ -4,13 +4,13 @@ import { Tab } from "@headlessui/react";
 
 import { getClassNames } from "~/utils";
 import ProductItem from "../../components/ProductItem";
-import { SectionsWithProducts } from "~/types/sections";
+import { ProductInSection } from "~/types/product";
 
 type Props = {
-  items: SectionsWithProducts;
+  items: ProductInSection[];
 };
 
-export default function Tabs({ items }: Props) {
+export default function ListProducts({ items }: Props) {
   return (
     <div className="px-2 sm:px-0">
       <Tab.Group>
@@ -52,7 +52,12 @@ export default function Tabs({ items }: Props) {
               >
                 <div className="grid w-full grid-cols-1 border-t border-l sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                   {item.products.map((product) => (
-                    <ProductItem item={product} key={product.id} bordered />
+                    <ProductItem
+                      ratingAtTop
+                      item={product}
+                      key={product.id}
+                      bordered
+                    />
                   ))}
                 </div>
               </Tab.Panel>

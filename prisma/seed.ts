@@ -166,6 +166,22 @@ async function main() {
   //       },
   //     });
   //   });
+
+  await prisma.product.update({
+    where: {
+      id: 14,
+    },
+    data: {
+      gallery: {
+        set: [
+          "https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg",
+          "https://tailwindui.com/img/ecommerce-images/product-page-03-product-02.jpg",
+          "https://tailwindui.com/img/ecommerce-images/product-page-03-product-03.jpg",
+          "https://tailwindui.com/img/ecommerce-images/product-page-03-product-04.jpg",
+        ],
+      },
+    },
+  });
 }
 
 main()

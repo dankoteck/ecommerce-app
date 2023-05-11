@@ -54,11 +54,12 @@ export default function PerksHeading() {
                 className="text-center lg:text-left lg:gap-4 lg:flex min-[1100px]:text-center min-[1100px]:block lg:items-start"
               >
                 {/* Illustrator */}
-                <div className="flow-root lg:flex-shrink-0">
+                <div className="relative flow-root mx-auto w-28 h-28 lg:flex-shrink-0">
                   <Image
-                    width={128}
-                    height={128}
-                    className="mx-auto"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover object-center w-full h-full"
                     src={perk.image}
                     alt="Perk illustration"
                   />

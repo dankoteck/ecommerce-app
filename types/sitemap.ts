@@ -1,8 +1,10 @@
 import { Section, SectionGroup } from "@prisma/client";
 
-export type Sitemap = (
-  | (SectionGroup & {
-      sections: Section[];
-    })
-  | null
-)[];
+export type Sitemap = {
+  id: number;
+  name: string;
+  sections: {
+    id: number;
+    name: string;
+  }[];
+}[];

@@ -1,8 +1,16 @@
-import { Category, Featured, Section, SectionGroup } from "@prisma/client";
-
-export type Navigation = (Category & {
-  featured: Featured[];
-  sectionsGroup: (SectionGroup & {
-    sections: Section[];
-  })[];
-})[];
+export type Navigation = {
+  featured: {
+    name: string;
+    slug: string;
+    imageSrc: string;
+    imageAlt: string;
+  }[];
+  sectionsGroup: {
+    name: string;
+    sections: {
+      name: string;
+      slug: string;
+    }[];
+  }[];
+  name: string;
+}[];

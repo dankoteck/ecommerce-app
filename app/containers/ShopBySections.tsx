@@ -1,13 +1,17 @@
-import { Section } from "@prisma/client";
+import { Prisma, Section } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 
 import { prisma } from "~/lib/prisma";
 import { InfoBadge, PinkBadge } from "../components/Badges";
 
-async function getSections(): Promise<Section[]> {
+async function getSections() {
   const sections = await prisma.section.findMany({
-    include: {
+    select: {
+      name: true,
+      slug: true,
+      imageAlt: true,
+      imageSrc: true,
       _count: {
         select: {
           products: true,
@@ -20,7 +24,8 @@ async function getSections(): Promise<Section[]> {
 }
 
 export default async function ShopBySections() {
-  const sections: Section[] = await getSections();
+  const sections: Prisma.PromiseReturnType<typeof getSections> =
+    await getSections();
   const groupSections = [
     //
     sections.slice(0, 3),
@@ -53,7 +58,7 @@ export default async function ShopBySections() {
           <p className="text-2xl">Shop by Section</p>
 
           {/* CTA */}
-          <Link href="/" className="text-sky-600">
+          <Link href="/" className="hidden sm:block text-sky-600">
             Browse all categories
             <span aria-hidden="true"> →</span>
           </Link>
@@ -69,7 +74,7 @@ export default async function ShopBySections() {
                 <Link
                   key={section.name}
                   href={`/section/${section.slug}`}
-                  className={`cursor-pointer row-span-1 aspect-h-1 aspect-w-1 col-span-1 relative rounded-lg overflow-hidden group ${getCategoryClassName(
+                  className={`cursor-pointer row-span-1 aspect-h-1 aspect-w-2 col-span-1 relative rounded-lg overflow-hidden group ${getCategoryClassName(
                     groupIndex,
                     categoryIndex
                   )} `}
@@ -102,6 +107,14 @@ export default async function ShopBySections() {
               ))}
             </div>
           ))}
+
+          <Link
+            href="/"
+            className="block pt-4 text-right sm:hidden text-sky-600"
+          >
+            Browse all categories
+            <span aria-hidden="true"> →</span>
+          </Link>
         </div>
       </div>
     </section>

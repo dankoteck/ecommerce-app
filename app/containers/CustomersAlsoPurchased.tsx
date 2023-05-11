@@ -1,19 +1,33 @@
+import { Prisma } from "@prisma/client";
 import Link from "next/link";
-import { Product } from "@prisma/client";
-import ProductSlider from "./ProductsSlider";
 import { prisma } from "~/lib/prisma";
+import ProductsSlider from "./ProductsSlider";
 
-async function getProductSlides(): Promise<Product[]> {
+async function getProducts() {
   // TODO: replace with API get list products has most rating
   const products = await prisma.product.findMany({
     where: { discount: { equals: 0 } },
+    select: {
+      id: true,
+      slug: true,
+      imageSrc: true,
+      imageAlt: true,
+      rating: true,
+      name: true,
+      description: true,
+      discount: true,
+      rawPrice: true,
+      price: true,
+    },
     take: 12,
   });
+
   return products;
 }
 
 export default async function CustomersAlsoPurchased() {
-  const slides = await getProductSlides();
+  const products: Prisma.PromiseReturnType<typeof getProducts> =
+    await getProducts();
 
   return (
     <div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -22,13 +36,18 @@ export default async function CustomersAlsoPurchased() {
         <p className="text-2xl">Customers also purchased</p>
 
         {/* CTA */}
-        <Link href="/" className="text-sky-600">
+        <Link href="/" className="hidden sm:block text-sky-600">
           Explore more in collection
           <span aria-hidden="true"> →</span>
         </Link>
       </div>
 
-      <ProductSlider showProductRating={false} items={slides} />
+      <ProductsSlider items={products} />
+
+      <Link href="/" className="block pt-4 text-right sm:hidden text-sky-600">
+        Explore more in collection
+        <span aria-hidden="true"> →</span>
+      </Link>
     </div>
   );
 }

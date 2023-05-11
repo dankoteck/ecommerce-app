@@ -20,3 +20,7 @@ export function slugify(str: string, id?: string | number) {
     `-${id ?? ""}`
   );
 }
+
+export function getSlugify(str: string) {
+  return str.split("-").slice(-1)[0]; // the item's id
+}

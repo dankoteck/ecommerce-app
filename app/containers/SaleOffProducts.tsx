@@ -1,18 +1,32 @@
-import { Product } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 import Link from "next/link";
 
 import { prisma } from "~/lib/prisma";
 import ProductItem from "../components/ProductItem";
+import { ProductWithFullProperties } from "~/types/product";
 
-async function getSaleOffProducts(): Promise<Product[]> {
+async function getSaleOffProducts() {
   const products = await prisma.product.findMany({
     where: { discount: { gt: 0 } },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      imageSrc: true,
+      imageAlt: true,
+      description: true,
+      rawPrice: true,
+      discount: true,
+      rating: true,
+      price: true,
+    },
   });
   return products;
 }
 
 export default async function SaleOffProducts() {
-  const products: Product[] = await getSaleOffProducts();
+  const products: Prisma.PromiseReturnType<typeof getSaleOffProducts> =
+    await getSaleOffProducts();
 
   return (
     <div className="bg-white">
@@ -22,7 +36,7 @@ export default async function SaleOffProducts() {
           <p className="text-2xl">Sale off products</p>
 
           {/* CTA */}
-          <Link href="/" className="text-sky-600">
+          <Link href="/" className="hidden sm:block text-sky-600">
             Shop the collection
             <span aria-hidden="true"> →</span>
           </Link>
@@ -33,6 +47,11 @@ export default async function SaleOffProducts() {
             <ProductItem item={product} key={product.id} bordered />
           ))}
         </div>
+
+        <Link href="/" className="block pt-4 text-right sm:hidden text-sky-600">
+          Shop the collection
+          <span aria-hidden="true"> →</span>
+        </Link>
       </div>
     </div>
   );

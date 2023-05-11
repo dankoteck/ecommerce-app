@@ -1,15 +1,8 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import {
-  FaFacebook,
-  FaGithub,
-  FaLinkedin,
-  FaTwitter,
-  FaYoutube,
-} from "react-icons/fa";
+
 import { Sitemap } from "~/types/sitemap";
+import SocialNetwork from "./SocialNetwork";
 
 type Props = {
   sitemap: Sitemap;
@@ -24,7 +17,7 @@ export default function Footer({ sitemap }: Props) {
   ];
 
   return (
-    <div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+    <footer className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <div className="lg:grid-cols-2 lg:grid lg:gap-8">
         <div>
           {/* Logo */}
@@ -48,17 +41,7 @@ export default function Footer({ sitemap }: Props) {
             My goal is to become a well-rounded Fullstack Developer.
           </p>
 
-          {/* Social Media */}
-          <div className="mt-8">
-            <h3 className="sr-only">Social media</h3>
-            <div className="flex gap-8">
-              <FaFacebook className="w-5 h-5 text-gray-500" />
-              <FaGithub className="w-5 h-5 text-gray-500" />
-              <FaLinkedin className="w-5 h-5 text-gray-500" />
-              <FaTwitter className="w-5 h-5 text-gray-500" />
-              <FaYoutube className="w-5 h-5 text-gray-500" />
-            </div>
-          </div>
+          <SocialNetwork github twitter facebook linkedin youtube />
         </div>
 
         {/* Sitemap */}
@@ -93,6 +76,6 @@ export default function Footer({ sitemap }: Props) {
           © 2023 Le Dang Khoa, Inc. All rights reserved.
         </p>
       </div>
-    </div>
+    </footer>
   );
 }

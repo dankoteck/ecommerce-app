@@ -2,21 +2,36 @@ import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
 import { prisma } from "~/lib/prisma";
-import Products from "./Products";
+import ListProducts from "./ListProducts";
 
-async function getListSections() {
+async function getSuggestedProducts() {
   // TODO: replace with API calls to get list sections have suggested products
   return await prisma.section.findMany({
-    take: 7,
-    include: {
-      products: true,
+    select: {
+      id: true,
+      name: true,
+      products: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          imageSrc: true,
+          imageAlt: true,
+          description: true,
+          rawPrice: true,
+          discount: true,
+          rating: true,
+          price: true,
+        },
+      },
     },
+    take: 7,
   });
 }
 
 export default async function SuggestedForYou() {
-  const sections: Prisma.PromiseReturnType<typeof getListSections> =
-    await getListSections();
+  const products: Prisma.PromiseReturnType<typeof getSuggestedProducts> =
+    await getSuggestedProducts();
 
   return (
     <div className="bg-white">
@@ -26,13 +41,18 @@ export default async function SuggestedForYou() {
           <p className="text-2xl">Suggested for you</p>
 
           {/* CTA */}
-          <Link href="/" className="text-sky-600">
+          <Link href="/" className="hidden sm:block text-sky-600">
             View all
             <span aria-hidden="true"> →</span>
           </Link>
         </div>
 
-        <Products items={sections} />
+        <ListProducts items={products} />
+
+        <Link href="/" className="block pt-4 text-right sm:hidden text-sky-600">
+          View all
+          <span aria-hidden="true"> →</span>
+        </Link>
       </div>
     </div>
   );

@@ -3,16 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { DangerBadge } from "./Badges";
 import Rating from "./Rating";
+import { ProductWithFullProperties } from "~/types/product";
 
 type Props = {
-  item: Product;
+  item: ProductWithFullProperties;
   bordered?: boolean;
   showRating?: boolean;
+  ratingAtTop?: boolean;
 };
 
 export default function ProductItem({
   item,
   bordered,
+  ratingAtTop,
   showRating = true,
 }: Props) {
   return (
@@ -31,7 +34,15 @@ export default function ProductItem({
         />
       </div>
 
-      {/* name */}
+      {/* Rating */}
+      {showRating && ratingAtTop && (
+        <div className="flex items-center">
+          <span className="mb-2 mr-1">{item.rating}</span>
+          <Rating condense />
+        </div>
+      )}
+
+      {/* Name */}
       <h3 className="mt-4 font-medium text-gray-700 line-clamp-1">
         {item.name}
       </h3>
@@ -58,7 +69,7 @@ export default function ProductItem({
         </div>
 
         {/* Rating */}
-        {showRating && (
+        {showRating && !ratingAtTop && (
           <div className="flex items-center">
             <span className="mr-1">{item.rating}</span>
             <Rating condense />
