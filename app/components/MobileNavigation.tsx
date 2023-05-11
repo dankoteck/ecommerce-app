@@ -129,14 +129,14 @@ export default function MobileNavigation({ open, setOpen, categories }: Props) {
                         {category.sectionsGroup.map((group) => (
                           <div key={group.name}>
                             <p
-                              id={`${category.id}-${group.id}-heading-mobile`}
+                              id={`${group.id}-heading-mobile`}
                               className="font-medium text-gray-900"
                             >
                               {group.name}
                             </p>
                             <ul
                               role="list"
-                              aria-labelledby={`${category.id}-${group.id}-heading-mobile`}
+                              aria-labelledby={`${group.id}-heading-mobile`}
                               className="flex flex-col mt-6 space-y-6"
                             >
                               {group.sections.map((section) => (

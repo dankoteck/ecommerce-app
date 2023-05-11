@@ -6,6 +6,7 @@ export type Navigation = {
     imageAlt: string;
   }[];
   sectionsGroup: {
+    id: number;
     name: string;
     sections: {
       name: string;

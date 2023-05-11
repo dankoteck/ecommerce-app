@@ -30,6 +30,7 @@ async function getCategories() {
       },
       sectionsGroup: {
         select: {
+          id: true,
           name: true,
           sections: {
             select: {
