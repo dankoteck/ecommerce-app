@@ -20,8 +20,8 @@ export default function Gallery({ items }: { items: Item[] | undefined }) {
           priority
           className="object-cover object-center w-full h-full"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          src={items?.[selectedImageIndex].imageSrc ?? ""}
-          alt={items?.[selectedImageIndex].imageAlt ?? ""}
+          src={items?.[selectedImageIndex]?.imageSrc ?? ""}
+          alt={items?.[selectedImageIndex]?.imageAlt ?? ""}
         />
       </div>
 
@@ -30,7 +30,7 @@ export default function Gallery({ items }: { items: Item[] | undefined }) {
           {items?.map((item, index) => (
             <button
               onClick={() => setSelectedImageIndex(index)}
-              className="relative flex items-center justify-center w-full h-24 bg-white rounded-md cursor-pointer  focus:ring ring-offset-2"
+              className="relative flex items-center justify-center w-full h-24 bg-white rounded-md cursor-pointer focus:ring ring-offset-2"
               key={item.id}
             >
               <span className="absolute inset-0 overflow-hidden rounded-md">
