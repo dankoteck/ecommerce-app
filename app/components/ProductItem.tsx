@@ -27,8 +27,11 @@ export default function ProductItem({
         <Image
           fill
           priority
-          src={item.imageSrc}
-          alt={item.imageAlt}
+          src={
+            item.imageSrc ??
+            "https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/ecommerce-product-image-not-found.jpeg"
+          }
+          alt={item.imageAlt ?? "Product image not found"}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover object-center w-full h-full group-hover:opacity-75"
         />

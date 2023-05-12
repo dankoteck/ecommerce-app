@@ -10,7 +10,7 @@ export default function FAQ({
 }) {
   return (
     <div className="flex flex-col">
-      <h2 className="pb-10 text-2xl border-b border-b-slate-200">
+      <h2 className="pb-6 text-2xl border-b border-b-slate-200">
         Frequently asked questions
       </h2>
 

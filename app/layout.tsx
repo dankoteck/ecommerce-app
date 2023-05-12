@@ -55,6 +55,7 @@ async function getSitemap() {
       sections: {
         select: {
           id: true,
+          slug: true,
           name: true,
         },
       },
@@ -80,7 +81,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Header categories={categories} />
         <SupabaseProvider>{children}</SupabaseProvider>
-        {/* <Footer sitemap={sitemap} /> */}
+        <Footer sitemap={sitemap} />
       </body>
     </html>
   );

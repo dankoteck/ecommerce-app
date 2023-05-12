@@ -12,8 +12,8 @@ export type ProductWithFullProperties = {
   id: number;
   name: string;
   slug: string;
-  imageSrc: string;
-  imageAlt: string;
+  imageSrc?: string;
+  imageAlt?: string;
   description: string | null;
   rawPrice: number;
   discount: number;

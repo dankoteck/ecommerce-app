@@ -17,21 +17,19 @@ export default function Footer({ sitemap }: Props) {
   ];
 
   return (
-    <footer className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+    <footer className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl border-t border-t-slate-200 lg:px-8">
       <div className="lg:grid-cols-2 lg:grid lg:gap-8">
         <div>
           {/* Logo */}
           <Link href="/" className="block w-fit">
             <span className="sr-only">Extremely Advanced Ecommerce Logo</span>
-            <div className="relative w-8 h-8 aspect-h-1 aspect-w-1">
+            <div className="relative w-20 h-20 aspect-h-1 aspect-w-1">
               <Image
                 fill
                 priority
-                unoptimized
                 sizes="(max-width: 768px) 10vw, (max-width: 1200px) 50vw, 33vw"
-                loader={({ src }) => src}
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Just a template logo"
+                src="https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/Ecommerce-Logo.png"
+                alt="Just a template Logo"
               />
             </div>
           </Link>
@@ -60,7 +58,9 @@ export default function Footer({ sitemap }: Props) {
                         key={section?.id}
                         className="[&:not(:last-child)]:mb-4"
                       >
-                        {section?.name}
+                        <Link href={`/section/${section.slug}`}>
+                          {section?.name}
+                        </Link>
                       </li>
                     ))}
                   </ul>

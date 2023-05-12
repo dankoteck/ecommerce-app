@@ -21,6 +21,6 @@ export function slugify(str: string, id?: string | number) {
   );
 }
 
-export function getSlugify(str: string) {
-  return str.split("-").slice(-1)[0]; // the item's id
+export function getIdFromSlugify(str: string): number {
+  return +str.split("-").slice(-1)[0]; // the item's id
 }

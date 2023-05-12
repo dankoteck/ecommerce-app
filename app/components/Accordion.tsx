@@ -7,12 +7,14 @@ import React from "react";
 export default function Accordion({
   title,
   children,
+  defaultOpen = false,
 }: {
   title: string | React.ReactNode;
   children: string | React.ReactNode;
+  defaultOpen?: boolean;
 }) {
   return (
-    <Disclosure>
+    <Disclosure defaultOpen={defaultOpen}>
       {({ open }) => (
         <>
           <Disclosure.Button className="flex justify-between w-full px-4 py-6 text-sm font-medium text-left rounded-lg focus:outline-none focus-visible:ring-0 focus-visible:outline-none">

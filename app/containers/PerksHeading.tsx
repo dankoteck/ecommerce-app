@@ -31,7 +31,7 @@ export default function PerksHeading() {
   return (
     <section
       aria-labelledby="perks-heading"
-      className="bg-slate-50 border-y border-y-slate-200"
+      className="border-t bg-slate-50 border-t-slate-200"
     >
       <div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 ">
         <h2

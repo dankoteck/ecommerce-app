@@ -5,10 +5,10 @@ import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
 import type { SupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "~/types/supabase";
 
 type SupabaseContext = {
-  // TODO: add <Database> generic here
-  supabase: SupabaseClient;
+  supabase: SupabaseClient<Database>;
 };
 
 const Context = createContext<SupabaseContext | undefined>(undefined);

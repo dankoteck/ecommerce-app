@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { getClassNames } from "~/utils";
 
 type Item = {
   id: number;
@@ -20,8 +21,8 @@ export default function Gallery({ items }: { items: Item[] | undefined }) {
           priority
           className="object-cover object-center w-full h-full"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          src={items?.[selectedImageIndex]?.imageSrc ?? ""}
-          alt={items?.[selectedImageIndex]?.imageAlt ?? ""}
+          src={items?.[selectedImageIndex]?.imageSrc ?? "https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/ecommerce-product-image-not-found.jpeg"}
+          alt={items?.[selectedImageIndex]?.imageAlt ?? "Not found image"}
         />
       </div>
 
@@ -30,7 +31,10 @@ export default function Gallery({ items }: { items: Item[] | undefined }) {
           {items?.map((item, index) => (
             <button
               onClick={() => setSelectedImageIndex(index)}
-              className="relative flex items-center justify-center w-full h-24 bg-white rounded-md cursor-pointer focus:ring ring-offset-2"
+              className={getClassNames(
+                index === selectedImageIndex ? "ring ring-offset-2 ring-indigo-600" : "",
+                "relative flex items-center justify-center w-full h-24 bg-white rounded-md cursor-pointer"
+              )}
               key={item.id}
             >
               <span className="absolute inset-0 overflow-hidden rounded-md">
@@ -38,8 +42,8 @@ export default function Gallery({ items }: { items: Item[] | undefined }) {
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  src={item.imageSrc ?? ""}
-                  alt={item.imageAlt ?? ""}
+                  src={item.imageSrc ?? "https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/ecommerce-product-image-not-found.jpeg"}
+                  alt={item.imageAlt ?? "Not found image"}
                   className="object-cover object-center w-full h-full"
                 />
               </span>

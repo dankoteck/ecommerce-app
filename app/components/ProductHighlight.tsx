@@ -17,7 +17,10 @@ export default function ProductHighLight({ title, items }: Props) {
 
   return (
     <div className="pl-4">
-      <Accordion title={<h4 className="text-sm font-medium">{title}</h4>}>
+      <Accordion
+        defaultOpen
+        title={<h4 className="text-sm font-medium">{title}</h4>}
+      >
         <div className="pl-8 text-sm border-t border-gray-100 text-slate-400">
           <dl className="divide-y divide-gray-100">
             {items.map((item) => (

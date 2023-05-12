@@ -94,7 +94,6 @@ model Product {
 model Attribute {
   id    Int    @id @default(autoincrement())
   name  String
-  slug  String @unique
   value String
 
   products Product[] @relation("ProductAttributes")

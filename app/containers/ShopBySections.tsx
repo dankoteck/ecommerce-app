@@ -83,8 +83,11 @@ export default async function ShopBySections() {
                     fill
                     priority
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    src={section.imageSrc ?? "https://picsum.photos/300/400"} // just a random picture
-                    alt={section.imageAlt ?? "Alt"}
+                    src={
+                      section.imageSrc ??
+                      "https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/ecommerce-product-image-not-found.jpeg"
+                    }
+                    alt={section.imageAlt ?? "Not founded image"}
                     className="object-cover object-center w-full h-full group-hover:opacity-75"
                   />
 

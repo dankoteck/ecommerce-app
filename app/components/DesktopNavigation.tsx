@@ -18,7 +18,7 @@ type Props = {
 
 export default function DesktopNavigation({ setOpen, categories }: Props) {
   return (
-    <header className="relative bg-white border-b border-gray-200">
+    <header className="relative z-50 bg-white border-b border-gray-200">
       <AdvertisingBanner />
 
       <nav aria-label="Top" className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -36,14 +36,12 @@ export default function DesktopNavigation({ setOpen, categories }: Props) {
           <div className="flex ml-4 lg:ml-0">
             <Link href="/">
               <span className="sr-only">Extremely Advanced Ecommerce</span>
-              <div className="relative w-8 h-8 aspect-h-1 aspect-w-1">
+              <div className="relative w-16 h-16 aspect-h-1 aspect-w-1">
                 <Image
+                  fill
                   priority
-                  unoptimized
-                  loader={({ src }) => src}
-                  width={32}
-                  height={32}
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  sizes="(max-width: 768px) 10vw, (max-width: 1200px) 50vw, 33vw"
+                  src="https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/Ecommerce-Logo.png"
                   alt="Just a template logo"
                 />
               </div>
