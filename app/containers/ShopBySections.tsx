@@ -1,33 +1,13 @@
-import { Prisma, Section } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 
-import { prisma } from "~/lib/prisma";
+import { getProductsWithinSection } from "../actions";
 import { InfoBadge, PinkBadge } from "../components/Badges";
 
-async function getSections() {
-  const sections = await prisma.section.findMany({
-    select: {
-      name: true,
-      slug: true,
-      imageAlt: true,
-      imageSrc: true,
-      _count: {
-        select: {
-          products: true,
-        },
-      },
-    },
-  });
-
-  return sections.filter((section) => section._count.products >= 2);
-}
-
 export default async function ShopBySections() {
-  const sections: Prisma.PromiseReturnType<typeof getSections> =
-    await getSections();
+  const sections = await getProductsWithinSection();
   const groupSections = [
-    //
+    // grouped sections for ease to render
     sections.slice(0, 3),
     sections.slice(3, 6),
   ];

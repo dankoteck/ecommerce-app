@@ -4,19 +4,21 @@ import {
   MagnifyingGlassIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/24/outline";
+import { Prisma } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
-import { Navigation } from "~/types/navigation";
 import { getClassNames } from "~/utils";
+import { getCategories } from "../actions";
 import AdvertisingBanner from "./AdvertisingBanner";
 
-type Props = {
+export default function DesktopNavigation({
+  setOpen,
+  categories,
+}: {
   setOpen: (open: boolean) => void;
-  categories: Navigation;
-};
-
-export default function DesktopNavigation({ setOpen, categories }: Props) {
+  categories: Prisma.PromiseReturnType<typeof getCategories>;
+}) {
   return (
     <header className="relative z-50 bg-white border-b border-gray-200">
       <AdvertisingBanner />
@@ -53,7 +55,7 @@ export default function DesktopNavigation({ setOpen, categories }: Props) {
             <div className="flex h-full space-x-8">
               {categories.map((category) => (
                 <Popover key={category.name} className="flex">
-                  {({ open }) => (
+                  {({ open, close }) => (
                     <>
                       <div className="relative flex">
                         <Popover.Button
@@ -135,6 +137,7 @@ export default function DesktopNavigation({ setOpen, categories }: Props) {
                                             className="flex"
                                           >
                                             <Link
+                                              onClick={close}
                                               href={`/section/${section.slug}`}
                                               className="hover:text-gray-800"
                                             >

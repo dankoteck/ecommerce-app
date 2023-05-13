@@ -1,37 +1,10 @@
-import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
-import { prisma } from "~/lib/prisma";
+import { getSuggestedProductsForCustomer } from "~/app/actions";
 import ListProducts from "./ListProducts";
 
-async function getSuggestedProducts() {
-  // TODO: replace with API calls to get list sections have suggested products
-  return await prisma.section.findMany({
-    select: {
-      id: true,
-      name: true,
-      products: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          imageSrc: true,
-          imageAlt: true,
-          description: true,
-          rawPrice: true,
-          discount: true,
-          rating: true,
-          price: true,
-        },
-      },
-    },
-    take: 7,
-  });
-}
-
 export default async function SuggestedForYou() {
-  const products: Prisma.PromiseReturnType<typeof getSuggestedProducts> =
-    await getSuggestedProducts();
+  const products = await getSuggestedProductsForCustomer();
 
   return (
     <div className="bg-white">

@@ -1,14 +1,14 @@
-import { Prisma } from "@prisma/client";
-
-import { prisma } from "~/lib/prisma";
-import { getIdFromSlugify } from "~/utils";
+import getProductDetails from "~/app/actions/getProductDetails";
 import { DangerBadge } from "~/app/components/Badges";
-import SocialNetwork from "~/app/components/SocialNetwork";
 import ProductHighLight from "~/app/components/ProductHighlight";
 import Rating from "~/app/components/Rating";
+import SocialNetwork from "~/app/components/SocialNetwork";
+import RelatedProducts from "~/app/containers/RelatedProducts";
+import { prisma } from "~/lib/prisma";
+import { getIdFromSlugify } from "~/utils";
 import Gallery from "./Gallery";
 import Tabs from "./Tabs";
-import RelatedProducts from "~/app/containers/RelatedProducts";
+import { returnsPromo, shippingPromo } from "~/data/promo";
 
 export async function generateStaticParams() {
   try {
@@ -27,90 +27,6 @@ export async function generateStaticParams() {
   }
 }
 
-async function getProduct(id: number) {
-  try {
-    const product = await prisma.product.findUnique({
-      where: { id },
-      select: {
-        attributes: true,
-        reviews: true,
-        slug: true,
-        gallery: true,
-        imageAlt: true,
-        imageSrc: true,
-        name: true,
-        rawPrice: true,
-        price: true,
-        id: true,
-        discount: true,
-        rating: true,
-        isNowPromotion: true,
-        featured: {
-          select: {
-            id: true,
-          },
-        },
-        sections: {
-          select: {
-            id: true,
-          },
-        },
-        description: true,
-      },
-    });
-    return product;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-}
-
-const shippingPromo = [
-  {
-    id: "free-shipping",
-    name: "Free shipping ",
-    value: "On orders over $300",
-  },
-  {
-    id: "internal-shipping",
-    name: "Internal shipping",
-    value: "Available",
-  },
-  {
-    id: "shipping-options",
-    name: "Shipping options",
-    value: "Expedited",
-  },
-  {
-    id: "required-signatured",
-    name: "Signature",
-    value: "Required upon delivery",
-  },
-];
-
-const returnsPromo = [
-  {
-    id: "easy-return",
-    name: "Return requests",
-    value: "Easy",
-  },
-  {
-    id: "prepaid-shipping",
-    name: "Pre-paid shipping label",
-    value: "Included",
-  },
-  {
-    id: "restocking-fee-for-returns",
-    name: "Restocking fee for returns",
-    value: "10%",
-  },
-  {
-    id: "return-window",
-    name: "Return window",
-    value: "60 days",
-  },
-];
-
 export default async function Page({
   params,
 }: {
@@ -119,9 +35,7 @@ export default async function Page({
   };
 }) {
   const productId = getIdFromSlugify(params.slug);
-  const product: Prisma.PromiseReturnType<typeof getProduct> = await getProduct(
-    +productId
-  );
+  const product = await getProductDetails(productId);
   const gallery = product?.gallery.map((image, index) => ({
     id: index + 1,
     imageSrc: image,

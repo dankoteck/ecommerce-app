@@ -1,32 +1,10 @@
-import { Prisma, Product } from "@prisma/client";
 import Link from "next/link";
 
-import { prisma } from "~/lib/prisma";
+import { getSaleOffProducts } from "../actions";
 import ProductItem from "../components/ProductItem";
-import { ProductWithFullProperties } from "~/types/product";
-
-async function getSaleOffProducts() {
-  const products = await prisma.product.findMany({
-    where: { discount: { gt: 0 } },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      imageSrc: true,
-      imageAlt: true,
-      description: true,
-      rawPrice: true,
-      discount: true,
-      rating: true,
-      price: true,
-    },
-  });
-  return products;
-}
 
 export default async function SaleOffProducts() {
-  const products: Prisma.PromiseReturnType<typeof getSaleOffProducts> =
-    await getSaleOffProducts();
+  const products = await getSaleOffProducts();
 
   return (
     <div className="bg-white">

@@ -1,19 +1,5 @@
 import Image from "next/image";
-import { prisma } from "~/lib/prisma";
-
-async function getPromotionProducts() {
-  try {
-    const products = await prisma.product.findMany({
-      where: { isNowPromotion: true },
-      select: { imageAlt: true, imageSrc: true },
-      take: 7,
-    });
-    return products;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-}
+import { getPromotionProducts } from "../actions";
 
 export default async function PromoSection() {
   const promotionProducts = await getPromotionProducts();

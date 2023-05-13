@@ -1,65 +1,6 @@
 import Link from "next/link";
-import { prisma } from "~/lib/prisma";
+import { getRelatedProducts } from "../actions";
 import ProductItem from "../components/ProductItem";
-
-export async function generateStaticParams() {
-  try {
-    const products = await prisma.product.findMany({
-      select: {
-        slug: true,
-      },
-    });
-
-    return products.map((product) => ({
-      slug: product.slug,
-    }));
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-}
-
-async function getRelatedProducts(productId: number, sectionId: number) {
-  try {
-    const products = await prisma.product.findMany({
-      take: 4,
-      where: {
-        sections: {
-          some: {
-            id: {
-              equals: sectionId,
-            },
-          },
-        },
-        AND: {
-          id: {
-            not: {
-              equals: productId,
-            },
-          },
-        },
-      },
-      select: {
-        id: true,
-        imageSrc: true,
-        imageAlt: true,
-        rawPrice: true,
-        price: true,
-        slug: true,
-        discount: true,
-        name: true,
-        description: true,
-        rating: true,
-        gallery: true,
-      },
-    });
-
-    return products;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-}
 
 type Props = {
   productId: number;

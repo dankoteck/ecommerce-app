@@ -1,60 +1,10 @@
-import { Prisma, Product, Section } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { prisma } from "~/lib/prisma";
+import { getWeekendSaleProducts } from "../actions";
 import ProductsSlider from "./ProductsSlider";
 
-async function getWeekendSales() {
-  // TODO: replace with API get list weekend sale
-  const sections = await prisma.section.findMany({
-    where: {
-      slug: {
-        startsWith: "women",
-      },
-    },
-    select: {
-      id: true,
-      slug: true,
-      imageAlt: true,
-      imageSrc: true,
-    },
-    take: 3,
-  });
-
-  const products = await prisma.product.findMany({
-    where: {
-      discount: { gt: 0 },
-      sections: {
-        every: {
-          slug: {
-            startsWith: "men",
-          },
-        },
-      },
-    },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      imageSrc: true,
-      imageAlt: true,
-      description: true,
-      rawPrice: true,
-      discount: true,
-      rating: true,
-      price: true,
-      reviews: true,
-    },
-  });
-
-  return { products, sections };
-}
-
 export default async function WeekendSale() {
-  const {
-    products,
-    sections,
-  }: Prisma.PromiseReturnType<typeof getWeekendSales> = await getWeekendSales();
+  const { products, sections } = await getWeekendSaleProducts();
 
   return (
     <section
@@ -86,7 +36,10 @@ export default async function WeekendSale() {
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  src={section.imageSrc ?? "https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/ecommerce-product-image-not-found.jpeg"}
+                  src={
+                    section.imageSrc ??
+                    "https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/ecommerce-product-image-not-found.jpeg"
+                  }
                   alt={section.imageAlt ?? "Not found image"}
                   className="object-cover object-center w-full h-full group-hover:opacity-75"
                 />

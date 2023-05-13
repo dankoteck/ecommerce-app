@@ -1,22 +1,21 @@
 "use client";
 
+import { Prisma } from "@prisma/client";
 import "keen-slider/keen-slider.min.css";
 
 import { useKeenSlider } from "keen-slider/react";
 import { Fragment, useState } from "react";
 import { useMediaQuery } from "~/hooks/media-query";
+import { getProductsForSlider } from "../actions";
 
-type Item = {
-  id: string | number;
-  [key: string]: any;
-};
+type SingleItem = Prisma.PromiseReturnType<typeof getProductsForSlider>[0];
 
 export default function KeenSlider({
   items,
   renderItem,
 }: {
-  items: Item[];
-  renderItem: (item: Item) => string | React.ReactNode;
+  items: SingleItem[];
+  renderItem: (item: SingleItem) => string | React.ReactNode;
 }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);

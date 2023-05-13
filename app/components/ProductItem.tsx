@@ -1,12 +1,14 @@
-import { Product } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import { getProductsForSlider } from "../actions";
 import { DangerBadge } from "./Badges";
 import Rating from "./Rating";
-import { ProductWithFullProperties } from "~/types/product";
+
+type Product = Prisma.PromiseReturnType<typeof getProductsForSlider>[0];
 
 type Props = {
-  item: ProductWithFullProperties;
+  item: Product;
   bordered?: boolean;
   showRating?: boolean;
   ratingAtTop?: boolean;

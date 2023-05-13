@@ -1,11 +1,10 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
-import { Prisma } from "@prisma/client";
 
-import { prisma } from "~/lib/prisma";
+import { Inter } from "next/font/google";
+
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import SupabaseProvider from "./supabase-provider";
+import { getCategories, getFooterSitemap } from "./actions";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,71 +15,23 @@ export const metadata = {
 
 export const revalidate = false;
 
-async function getCategories() {
-  const categories = await prisma.category.findMany({
-    select: {
-      name: true,
-      featured: {
-        select: {
-          imageAlt: true,
-          imageSrc: true,
-          name: true,
-          slug: true,
-        },
-      },
-      sectionsGroup: {
-        select: {
-          id: true,
-          name: true,
-          sections: {
-            select: {
-              name: true,
-              slug: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
-  return categories;
-}
-
-async function getSitemap() {
-  // TODO: replace with API call with real sitemap
-  const sitemap = await prisma.sectionGroup.findMany({
-    select: {
-      id: true,
-      name: true,
-      sections: {
-        select: {
-          id: true,
-          slug: true,
-          name: true,
-        },
-      },
-    },
-    take: 4,
-  });
-
-  return sitemap;
-}
-
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const categories: Prisma.PromiseReturnType<typeof getCategories> =
-    await getCategories();
-  const sitemap: Prisma.PromiseReturnType<typeof getSitemap> =
-    await getSitemap();
+  const categoriesPromise = getCategories();
+  const sitemapPromise = getFooterSitemap();
+  const [categories, sitemap] = await Promise.all([
+    categoriesPromise,
+    sitemapPromise,
+  ]);
 
   return (
     <html lang="en">
       <body className={inter.className}>
         <Header categories={categories} />
-        <SupabaseProvider>{children}</SupabaseProvider>
+        {children}
         <Footer sitemap={sitemap} />
       </body>
     </html>

@@ -4,12 +4,14 @@ import { useState } from "react";
 import { Navigation } from "~/types/navigation";
 import DesktopNavigation from "./DesktopNavigation";
 import MobileNavigation from "./MobileNavigation";
+import { Prisma } from "@prisma/client";
+import { getCategories } from "../actions";
 
-type Props = {
-  categories: Navigation;
-};
-
-export default function Header({ categories }: Props) {
+export default function Header({
+  categories,
+}: {
+  categories: Prisma.PromiseReturnType<typeof getCategories>;
+}) {
   const [open, setOpen] = useState(false);
 
   return (

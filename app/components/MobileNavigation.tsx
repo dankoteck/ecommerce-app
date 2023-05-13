@@ -16,19 +16,22 @@
 
 import { Dialog, Tab, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Prisma } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
-import { Navigation } from "~/types/navigation";
 import { getClassNames } from "~/utils";
+import { getCategories } from "../actions";
 
-type Props = {
+export default function MobileNavigation({
+  open,
+  setOpen,
+  categories,
+}: {
   open: boolean;
   setOpen: (open: boolean) => void;
-  categories: Navigation;
-};
-
-export default function MobileNavigation({ open, setOpen, categories }: Props) {
+  categories: Prisma.PromiseReturnType<typeof getCategories>;
+}) {
   return (
     <div className="bg-white">
       <Transition.Root show={open} as={Fragment}>
