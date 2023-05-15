@@ -7,6 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 import { ProductDetails } from "../actions/getProductDetails";
+import { redirect } from "next/navigation";
+import { toast } from "react-toastify";
 
 const OrderSummary = dynamic(() => import("./OrderSummary"), {
   ssr: false,
@@ -47,6 +49,38 @@ export default function ShoppingCart({
     (prev, curr) => prev + curr.price * curr.quantity,
     0
   );
+
+  const onCheckout = async () => {
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(items),
+      });
+
+      if (!response.ok) {
+        return toast.error("Failed to create order", {
+          position: "top-left",
+          autoClose: 4000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+
+      const { url } = await response.json();
+
+      window.location.href = url;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -180,12 +214,12 @@ export default function ShoppingCart({
                         cod={5} // hard code for now
                         tax={8.32} // hard code for now
                       />
-                        <Link
-                          href="#"
-                          className="flex items-center justify-center px-6 py-3 mt-6 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700"
-                        >
-                          Checkout
-                        </Link>
+                      <button
+                        onClick={onCheckout}
+                        className="flex items-center justify-center w-full px-6 py-3 mt-6 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700"
+                      >
+                        Checkout
+                      </button>
                     </div>
                   </div>
                 </Dialog.Panel>
