@@ -4,13 +4,9 @@ import { Tab } from "@headlessui/react";
 
 import { getClassNames } from "~/utils";
 import ProductItem from "../../components/ProductItem";
-import { ProductInSection } from "~/types/product";
+import { SuggestedProducts } from "~/app/actions/getSuggestedProductsForCustomer";
 
-type Props = {
-  items: ProductInSection[];
-};
-
-export default function ListProducts({ items }: Props) {
+export default function ListProducts({ items }: { items: SuggestedProducts }) {
   return (
     <div className="px-2 sm:px-0">
       <Tab.Group>

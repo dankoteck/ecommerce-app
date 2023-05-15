@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { cache } from "react";
 import { prisma } from "~/lib/prisma";
 
@@ -32,3 +33,7 @@ async function getSuggestedProductsForCustomer() {
 }
 
 export default cache(getSuggestedProductsForCustomer);
+
+export type SuggestedProducts = Prisma.PromiseReturnType<
+  typeof getSuggestedProductsForCustomer
+>;
