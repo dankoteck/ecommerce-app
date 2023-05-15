@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { cache } from "react";
 import { prisma } from "~/lib/prisma";
 
@@ -35,3 +36,5 @@ async function getSectionPage(id: number) {
 }
 
 export default cache(getSectionPage);
+
+export type SectionPage = Prisma.PromiseReturnType<typeof getSectionPage>;

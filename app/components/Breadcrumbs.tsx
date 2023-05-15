@@ -16,12 +16,12 @@ export default function Breadcrumbs({ items }: Props) {
           <li key={index} className="inline-flex items-center">
             <Link
               href={item.path}
-              className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+              className="inline-flex items-center text-sm font-medium text-black hover:text-blue-600 "
             >
               {item.path === "/" ? (
-                <HomeIcon className="w-4 h-4 mr-4" />
+                <HomeIcon className="w-4 h-4 mr-2" />
               ) : (
-                <ChevronRightIcon className="w-4 h-4 mr-4" />
+                <ChevronRightIcon className="w-4 h-4 mr-2" />
               )}
 
               {item.title}

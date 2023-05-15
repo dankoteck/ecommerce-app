@@ -5,7 +5,7 @@ import "keen-slider/keen-slider.min.css";
 
 import { useKeenSlider } from "keen-slider/react";
 import { Fragment, useState } from "react";
-import { useMediaQuery } from "~/hooks/media-query";
+import { useMediaQuery } from "~/hooks/mediaQuery";
 import { getProductsForSlider } from "../actions";
 
 type SingleItem = Prisma.PromiseReturnType<typeof getProductsForSlider>[0];

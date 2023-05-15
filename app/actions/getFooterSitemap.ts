@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { cache } from "react";
 import { prisma } from "~/lib/prisma";
 
@@ -27,3 +28,5 @@ async function getFooterSitemap() {
 }
 
 export default cache(getFooterSitemap);
+
+export type FooterSitemap = Prisma.PromiseReturnType<typeof getFooterSitemap>;

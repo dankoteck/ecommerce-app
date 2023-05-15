@@ -24,18 +24,22 @@ import { getClassNames } from "~/utils";
 import { getCategories } from "../actions";
 
 export default function MobileNavigation({
-  open,
-  setOpen,
+  openMobileMenu,
+  setOpenMobileMenu,
   categories,
 }: {
-  open: boolean;
-  setOpen: (open: boolean) => void;
+  openMobileMenu: boolean;
+  setOpenMobileMenu: (open: boolean) => void;
   categories: Prisma.PromiseReturnType<typeof getCategories>;
 }) {
   return (
     <div className="bg-white">
-      <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
+      <Transition.Root show={openMobileMenu} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-40 lg:hidden"
+          onClose={setOpenMobileMenu}
+        >
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -63,7 +67,7 @@ export default function MobileNavigation({
                   <button
                     type="button"
                     className="inline-flex items-center justify-center p-2 -m-2 text-gray-400 rounded-md"
-                    onClick={() => setOpen(false)}
+                    onClick={() => setOpenMobileMenu(false)}
                   >
                     <span className="sr-only">Close menu</span>
                     <XMarkIcon className="w-6 h-6" aria-hidden="true" />

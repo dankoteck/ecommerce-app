@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { cache } from "react";
 import { prisma } from "~/lib/prisma";
 
@@ -37,3 +38,5 @@ async function getCategories() {
 }
 
 export default cache(getCategories);
+
+export type Categories = Prisma.PromiseReturnType<typeof getCategories>;

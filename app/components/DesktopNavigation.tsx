@@ -1,3 +1,5 @@
+"use client";
+
 import { Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -7,18 +9,54 @@ import {
 import { Prisma } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import useLocalStorage from "~/hooks/localStorage";
 import { getClassNames } from "~/utils";
 import { getCategories } from "../actions";
 import AdvertisingBanner from "./AdvertisingBanner";
+import ShoppingCart from "./ShoppingCart";
+import { ProductDetails } from "../actions/getProductDetails";
+
+type CartItem = ProductDetails & {
+  quantity: number;
+};
 
 export default function DesktopNavigation({
-  setOpen,
+  setOpenMobileMenu,
   categories,
 }: {
-  setOpen: (open: boolean) => void;
+  setOpenMobileMenu: (open: boolean) => void;
   categories: Prisma.PromiseReturnType<typeof getCategories>;
 }) {
+  const [cartItems, setCartItems] = useLocalStorage<CartItem[]>(
+    "cartItems",
+    []
+  );
+  const [openShoppingCart, setOpenShoppingCart] = useState(false);
+
+  const onOpenShoppingCart = () => {
+    setOpenShoppingCart(true);
+  };
+
+  const onRemoveItem = (id: number) => {
+    const productInCartIndex = cartItems.findIndex((item) => item.id === id);
+    const newCardItems = [
+      ...cartItems.slice(0, productInCartIndex),
+      ...cartItems.slice(productInCartIndex + 1),
+    ];
+    setCartItems(newCardItems);
+  };
+
+  const onUpdateProductQuantity = (id: number, quantity: number) => {
+    const productIndex = cartItems.findIndex((item) => item.id === id);
+
+    if (productIndex > -1) {
+      const newCartItems = [...cartItems];
+      newCartItems[productIndex].quantity = quantity;
+      setCartItems(newCartItems);
+    }
+  };
+
   return (
     <header className="relative z-50 bg-white border-b border-gray-200">
       <AdvertisingBanner />
@@ -28,7 +66,7 @@ export default function DesktopNavigation({
           <button
             type="button"
             className="p-2 text-gray-400 bg-white rounded-md lg:hidden"
-            onClick={() => setOpen(true)}
+            onClick={() => setOpenMobileMenu(true)}
           >
             <span className="sr-only">Open menu</span>
             <Bars3Icon className="w-6 h-6" aria-hidden="true" />
@@ -158,16 +196,6 @@ export default function DesktopNavigation({
                   )}
                 </Popover>
               ))}
-
-              {/* {pages.map((page) => (
-                  <a
-                    key={page.name}
-                    href={page.href}
-                    className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    {page.name}
-                  </a>
-                ))} */}
             </div>
           </Popover.Group>
 
@@ -191,19 +219,31 @@ export default function DesktopNavigation({
 
             {/* Cart */}
             <div className="flow-root ml-4 lg:ml-6">
-              <Link href="/cart" className="flex items-center p-2 -m-2 group">
+              <button
+                onClick={onOpenShoppingCart}
+                type="button"
+                className="inline-flex items-center py-2.5 text-sm font-medium text-center text-white rounded-lg"
+              >
                 <ShoppingBagIcon
                   className="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-gray-500"
                   aria-hidden="true"
                 />
-                <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                  0
+                <span className="inline-flex items-center justify-center w-4 h-4 p-1 ml-2 text-base font-semibold text-black ">
+                  {cartItems.length}
                 </span>
                 <span className="sr-only">items in cart, view bag</span>
-              </Link>
+              </button>
             </div>
           </div>
         </div>
+
+        <ShoppingCart
+          items={cartItems}
+          open={openShoppingCart}
+          setOpen={setOpenShoppingCart}
+          onRemoveItem={onRemoveItem}
+          onUpdateItem={onUpdateProductQuantity}
+        />
       </nav>
     </header>
   );

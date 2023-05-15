@@ -15,13 +15,16 @@ export default function Gallery({ items }: { items: Item[] | undefined }) {
 
   return (
     <div className="lg:col-span-4 lg:row-end-1">
-      <div className="overflow-hidden aspect-w-4 aspect-h-3">
+      <div className="overflow-hidden border rounded-md aspect-w-4 aspect-h-3 border-slate-100">
         <Image
           fill
           priority
           className="object-cover object-center w-full h-full"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          src={items?.[selectedImageIndex]?.imageSrc ?? "https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/ecommerce-product-image-not-found.jpeg"}
+          src={
+            items?.[selectedImageIndex]?.imageSrc ??
+            "https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/ecommerce-product-image-not-found.jpeg"
+          }
           alt={items?.[selectedImageIndex]?.imageAlt ?? "Not found image"}
         />
       </div>
@@ -32,7 +35,9 @@ export default function Gallery({ items }: { items: Item[] | undefined }) {
             <button
               onClick={() => setSelectedImageIndex(index)}
               className={getClassNames(
-                index === selectedImageIndex ? "ring ring-offset-2 ring-indigo-600" : "",
+                index === selectedImageIndex
+                  ? "ring ring-offset-2 ring-indigo-600"
+                  : "",
                 "relative flex items-center justify-center w-full h-24 bg-white rounded-md cursor-pointer"
               )}
               key={item.id}
@@ -42,7 +47,10 @@ export default function Gallery({ items }: { items: Item[] | undefined }) {
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  src={item.imageSrc ?? "https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/ecommerce-product-image-not-found.jpeg"}
+                  src={
+                    item.imageSrc ??
+                    "https://mxobnfuivgwfltxkazmu.supabase.co/storage/v1/object/public/assets/ecommerce-product-image-not-found.jpeg"
+                  }
                   alt={item.imageAlt ?? "Not found image"}
                   className="object-cover object-center w-full h-full"
                 />

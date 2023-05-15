@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Sitemap } from "~/types/sitemap";
+import { FooterSitemap } from "../actions/getFooterSitemap";
 import SocialNetwork from "./SocialNetwork";
 
 type Props = {
-  sitemap: Sitemap;
+  sitemap: FooterSitemap;
 };
 
 export default function Footer({ sitemap }: Props) {
@@ -17,7 +17,7 @@ export default function Footer({ sitemap }: Props) {
   ];
 
   return (
-    <footer className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl border-t border-t-slate-200 lg:px-8">
+    <footer className="max-w-2xl px-4 py-16 mx-auto border-t sm:px-6 sm:py-24 lg:max-w-7xl border-t-slate-200 lg:px-8">
       <div className="lg:grid-cols-2 lg:grid lg:gap-8">
         <div>
           {/* Logo */}

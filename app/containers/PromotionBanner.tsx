@@ -63,7 +63,7 @@ export default async function PromoSection() {
 
               <a
                 href="#"
-                className="!relative inline-block px-8 py-3 font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700"
+                className="relative inline-block px-8 py-3 font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700"
               >
                 Shop New Arrivals
               </a>

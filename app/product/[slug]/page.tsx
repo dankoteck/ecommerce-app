@@ -9,6 +9,7 @@ import { getIdFromSlugify } from "~/utils";
 import Gallery from "./Gallery";
 import Tabs from "./Tabs";
 import { returnsPromo, shippingPromo } from "~/data/promo";
+import AddToCart from "./AddToCart";
 
 export async function generateStaticParams() {
   try {
@@ -79,13 +80,9 @@ export default async function Page({
               </div>
             </div>
 
-            <p className="mt-6 text-slate-500">{product?.description}</p>
+            <p className="mt-6 text-slate-500 line-clamp-[14]">{product?.description}</p>
 
-            <div className="grid grid-cols-1 gap-6 mt-10 gap-y-4">
-              <button className="inline-block px-8 py-3 font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700">
-                Add to cart
-              </button>
-            </div>
+            <AddToCart currentProduct={product} />
           </div>
 
           {/* Product highlights & properties */}
