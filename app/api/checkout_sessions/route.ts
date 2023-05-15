@@ -17,3 +17,5 @@
 // };
 // const checkoutSession: Stripe.Checkout.Session =
 //   await stripe.checkout.sessions.create(params);
+
+export function GET() {}
