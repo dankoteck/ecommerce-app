@@ -1,3 +1,3 @@
 export default function Page() {
-  return <h1>Hello I'm here after payment</h1>;
+  return <h1>Payment success</h1>;
 }

@@ -29,6 +29,7 @@ export async function POST(request: Request) {
 
     const session = await stripe.checkout.sessions.create({
       line_items: body.map((product) => ({
+        quantity: product.quantity,
         price_data: {
           currency: "usd",
           unit_amount: product.price * 100,
@@ -38,8 +39,6 @@ export async function POST(request: Request) {
             images: [product.imageSrc],
           },
         },
-        tax_rates: ["5"],
-        quantity: product.quantity,
       })),
       mode: "payment",
       success_url: `${request.headers.get(
