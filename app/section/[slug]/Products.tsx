@@ -23,7 +23,7 @@ export default function Products({
   section: SectionPage;
   filters: Item[];
 }) {
-  // const [filter, setFilter] = useState([]);
+  const [filtering, setFiltering] = useState(false);
   const [list, setList] = useState(section?.products ?? []);
   const [loading, setLoading] = useState(false);
 
@@ -71,6 +71,7 @@ export default function Products({
 
   const onFiltering = async (indexes: number[], key: string) => {
     setLoading(true);
+    setFiltering(true);
     try {
       const params = indexes.map((index) => groupedFilters[key][index].value);
       const response = await fetch(
@@ -79,8 +80,7 @@ export default function Products({
       const data = await response.json();
       if (data) {
         const { products } = data;
-        // setList(products);
-        console.log(products);
+        setList(products);
       }
     } catch (err) {
       console.log(err);
@@ -88,6 +88,12 @@ export default function Products({
     } finally {
       setLoading(false);
     }
+  };
+
+  const onClearAllFilter = () => {
+    setLoading(false);
+    setFiltering(false);
+    setList(section.products);
   };
 
   return (
@@ -111,7 +117,7 @@ export default function Products({
       </div>
 
       <div className="py-24 pt-8">
-        <div className="flex flex-wrap gap-4 text-center">
+        <div className="flex flex-wrap items-center gap-4 text-center">
           {Object.keys(groupedFilters).map((key) => (
             <MenuDropdown
               multiple
@@ -119,31 +125,50 @@ export default function Products({
               onSelect={(indexes) => onFiltering(indexes, key)}
               options={groupedFilters[key]}
               defaultCheckedFirstValue={false}
+              filtering={filtering}
             >
               {key}
             </MenuDropdown>
           ))}
+          {filtering && (
+            <>
+              <span className="mx-2 text-slate-300">|</span>
+              <button className="text-slate-500" onClick={onClearAllFilter}>
+                Clear all
+              </button>
+            </>
+          )}
         </div>
 
-        <div className="flex justify-end w-full mb-8">
-          <Link href="/" className="hidden sm:block text-sky-600">
+        {list.length > 0 && (
+          <div className="flex justify-end w-full mb-8">
+            <Link href="/" className="hidden sm:block text-sky-600">
+              View all products
+              <span aria-hidden="true"> →</span>
+            </Link>
+          </div>
+        )}
+        <Spinner spin={loading}>
+          {list.length === 0 ? (
+            <div className="text-center">No products found</div>
+          ) : (
+            <div className="grid grid-cols-1 border-t border-l sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {list.map((product) => (
+                <ProductItem item={product} key={product.id} bordered />
+              ))}
+            </div>
+          )}
+        </Spinner>
+
+        {list.length > 0 && (
+          <Link
+            href="/"
+            className="block pt-4 text-right sm:hidden text-sky-600"
+          >
             View all products
             <span aria-hidden="true"> →</span>
           </Link>
-        </div>
-
-        <Spinner spin={loading}>
-          <div className="grid grid-cols-1 border-t border-l sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {list.map((product) => (
-              <ProductItem item={product} key={product.id} bordered />
-            ))}
-          </div>
-        </Spinner>
-
-        <Link href="/" className="block pt-4 text-right sm:hidden text-sky-600">
-          View all products
-          <span aria-hidden="true"> →</span>
-        </Link>
+        )}
       </div>
     </>
   );

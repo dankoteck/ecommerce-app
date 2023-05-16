@@ -2,7 +2,7 @@
 
 import { Popover, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { getClassNames } from "~/utils";
 
 type Item = {
@@ -18,6 +18,7 @@ export default function MenuDropdown({
   children,
   defaultCheckedFirstValue = true,
   bordered = true,
+  filtering = false,
 }: {
   multiple?: boolean;
   onSelect: (params: number[]) => void;
@@ -25,10 +26,17 @@ export default function MenuDropdown({
   children: string;
   defaultCheckedFirstValue?: boolean;
   bordered?: boolean;
+  filtering?: boolean;
 }) {
   const [activeIndex, setActiveIndex] = useState(
     defaultCheckedFirstValue ? [0] : []
   );
+
+  useEffect(() => {
+    if (!filtering && !defaultCheckedFirstValue) {
+      setActiveIndex([]);
+    }
+  }, [filtering, defaultCheckedFirstValue]);
 
   const handleSelect = (index: number) => {
     let newActiveIndex = [index];
@@ -58,7 +66,7 @@ export default function MenuDropdown({
           ? activeIndex.length === 0
             ? ""
             : `(${activeIndex.length})`
-          : options[activeIndex[0]].label}
+          : options[activeIndex[0]]?.label}
         <ChevronDownIcon className="w-3 h-3 font-bold" aria-hidden="true" />
       </Popover.Button>
 
@@ -72,7 +80,7 @@ export default function MenuDropdown({
         leaveTo="opacity-0 translate-y-1"
       >
         <Popover.Panel className="absolute z-10 flex w-screen px-4 mt-5 -translate-x-1/2 left-1/2 max-w-max">
-          <div className="flex-auto pr-8 overflow-hidden text-sm leading-6 bg-white rounded-md shadow-lg w-fit ring-1 ring-gray-900/5">
+          <div className="flex-auto pr-2 overflow-hidden text-sm leading-6 bg-white rounded-md shadow-lg w-fit ring-1 ring-gray-900/5">
             <div className="p-1">
               {options.map((option, index) => (
                 <div
@@ -82,7 +90,7 @@ export default function MenuDropdown({
                     activeIndex.includes(index)
                       ? "font-semibold text-black"
                       : "",
-                    "relative flex p-2 gap-2 text-slate-500 rounded-md cursor-pointer group hover:bg-gray-50"
+                    "relative flex p-2 gap-2 text-slate-700 rounded-md cursor-pointer group hover:bg-gray-50"
                   )}
                 >
                   <span

@@ -41,9 +41,9 @@ export default async function Page({
 
   return (
     <div className="max-w-2xl px-4 mx-auto lg:max-w-7xl sm:px-6 lg:px-8">
-      <div className="py-4 border-b boder-b-slate-200">
+      {/* <div className="py-4 border-b boder-b-slate-200">
         <Breadcrumbs items={breadcrumbItems} />
-      </div>
+      </div> */}
 
       <Products filters={filters} section={section} />
     </div>

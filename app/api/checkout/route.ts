@@ -1,24 +1,6 @@
 import { NextResponse } from "next/server";
 import { ProductDetails } from "~/app/actions/getProductDetails";
 import { stripe } from "~/lib/stripe";
-// import { formatAmountForStripe } from "~/utils/stripe-helpers";
-
-// const params: Stripe.Checkout.SessionCreateParams = {
-//   submit_type: "donate",
-//   payment_method_types: ["card"],
-//   line_items: [
-//     {
-//       name: "Custom amount donation",
-//       amount: formatAmountForStripe(amount, CURRENCY),
-//       currency: CURRENCY,
-//       quantity: 1,
-//     },
-//   ],
-//   success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-//   cancel_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-// };
-// const checkoutSession: Stripe.Checkout.Session =
-//   await stripe.checkout.sessions.create(params);
 
 export async function POST(request: Request) {
   try {
@@ -35,7 +17,7 @@ export async function POST(request: Request) {
           unit_amount: product.price * 100,
           product_data: {
             name: product.name,
-            description: product.description as string,
+            description: (product.description as string).slice(0, 30), // maximum 30 character for product describe.
             images: [product.imageSrc],
           },
         },
@@ -44,7 +26,9 @@ export async function POST(request: Request) {
       success_url: `${request.headers.get(
         "origin"
       )}/payment?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${request.headers.get("origin")}/payment?canceled=true`,
+      cancel_url: `${request.headers.get(
+        "origin"
+      )}/payment?canceled=true&session_id={CHECKOUT_SESSION_ID}`,
     });
     return NextResponse.json({ url: session.url });
   } catch (err) {

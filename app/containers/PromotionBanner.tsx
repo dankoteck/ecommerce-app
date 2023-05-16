@@ -48,6 +48,7 @@ export default async function PromoSection() {
                           >
                             <Image
                               fill
+                              priority
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               src={product.imageSrc}
                               alt={product.imageAlt}

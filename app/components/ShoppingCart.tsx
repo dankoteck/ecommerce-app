@@ -1,14 +1,13 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
-import { ProductDetails } from "../actions/getProductDetails";
-import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
+import { ProductDetails } from "../actions/getProductDetails";
 
 const OrderSummary = dynamic(() => import("./OrderSummary"), {
   ssr: false,
@@ -49,6 +48,12 @@ export default function ShoppingCart({
     (prev, curr) => prev + curr.price * curr.quantity,
     0
   );
+  const isEmptyCart = items.length === 0;
+
+  const backToShopping = () => {
+    setOpen(false);
+    window.location.href = "/";
+  };
 
   const onCheckout = async () => {
     try {
@@ -128,97 +133,114 @@ export default function ShoppingCart({
                       </div>
                     </div>
                     {/* List products */}
-                    <div className="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
-                      <div>
-                        <div className="flow-root">
-                          <ul
-                            role="list"
-                            className="-my-6 divide-y divide-gray-200"
-                          >
-                            {items.map((product) => (
-                              <li key={product.id} className="flex py-6">
-                                <div className="relative flex items-center justify-center flex-shrink-0 w-24 h-24 overflow-hidden border border-gray-200 rounded-md shadow-md">
-                                  <Image
-                                    width={56}
-                                    height={56}
-                                    src={product.imageSrc}
-                                    alt={product.imageAlt}
-                                  />
-                                </div>
-
-                                <div className="flex flex-col flex-1 ml-4">
-                                  <div>
-                                    <div className="flex justify-between text-sm font-medium hover:underline">
-                                      <Link
-                                        target="_blank"
-                                        href={`/product/${product.slug}`}
-                                        className="w-full flex items-start gap-2 !text-indigo-600 "
-                                      >
-                                        <span className="line-clamp-1">
-                                          {product.name}
-                                        </span>
-                                      </Link>
-                                    </div>
-                                    <p className="mt-1 font-normal text-black">
-                                      {Intl.NumberFormat("en-US", {
-                                        currency: "USD",
-                                        style: "currency",
-                                      }).format(
-                                        product.price * product.quantity
-                                      )}
-                                    </p>
+                    {isEmptyCart ? (
+                      <div className="px-4 py-6 text-center sm:px-6">
+                        <ShoppingBagIcon className="block mx-auto font-normal text-indigo-700 w-42 h-42" />
+                        <h1 className="mt-2 text-3xl font-semibold">
+                          Look like your cart is currently empty.
+                        </h1>
+                        <p className="mt-2 text-base text-slate-500">
+                          {
+                            "Before proceed to checkout you must add some products to your shopping cart. You'll find a lots of interesting products on our Homepage."
+                          }
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
+                        <div>
+                          <div className="flow-root">
+                            <ul
+                              role="list"
+                              className="-my-6 divide-y divide-gray-200"
+                            >
+                              {items.map((product) => (
+                                <li key={product.id} className="flex py-6">
+                                  <div className="relative flex items-center justify-center flex-shrink-0 w-24 h-24 overflow-hidden border border-gray-200 rounded-md shadow-md">
+                                    <Image
+                                      priority
+                                      width={56}
+                                      height={56}
+                                      src={product.imageSrc}
+                                      alt={product.imageAlt}
+                                    />
                                   </div>
-                                  <div className="flex items-end justify-between flex-1 text-sm">
-                                    <div className="flex items-end gap-4">
-                                      Qty:{" "}
-                                      <select
-                                        onChange={(evt) =>
-                                          onUpdateItem(
-                                            product.id,
-                                            +evt.target.value
-                                          )
-                                        }
-                                        defaultValue={product.quantity}
-                                        className="block w-16 px-3 py-1 font-medium text-gray-900 border rounded-md shadow-md appearance-none cursor-pointer focus:ring-blue-500 focus:border-blue-500 border-slate-200"
-                                      >
-                                        {quantityOptions.map((item) => (
-                                          <option
-                                            key={item.value}
-                                            value={item.value}
-                                          >
-                                            {item.label}
-                                          </option>
-                                        ))}
-                                      </select>
-                                    </div>
 
-                                    <button
-                                      onClick={() => onRemoveItem(product.id)}
-                                      type="button"
-                                      className="font-medium text-red-600 hover:text-red-500"
-                                    >
-                                      Remove
-                                    </button>
+                                  <div className="flex flex-col flex-1 ml-4">
+                                    <div>
+                                      <div className="flex justify-between text-sm font-medium hover:underline">
+                                        <Link
+                                          target="_blank"
+                                          href={`/product/${product.slug}`}
+                                          className="w-full flex items-start gap-2 !text-indigo-600 "
+                                        >
+                                          <span className="line-clamp-1">
+                                            {product.name}
+                                          </span>
+                                        </Link>
+                                      </div>
+                                      <p className="mt-1 font-normal text-black">
+                                        {Intl.NumberFormat("en-US", {
+                                          currency: "USD",
+                                          style: "currency",
+                                        }).format(
+                                          product.price * product.quantity
+                                        )}
+                                      </p>
+                                    </div>
+                                    <div className="flex items-end justify-between flex-1 text-sm">
+                                      <div className="flex items-end gap-4">
+                                        Qty:{" "}
+                                        <select
+                                          onChange={(evt) =>
+                                            onUpdateItem(
+                                              product.id,
+                                              +evt.target.value
+                                            )
+                                          }
+                                          defaultValue={product.quantity}
+                                          className="block w-16 px-3 py-1 font-medium text-gray-900 border rounded-md shadow-md appearance-none cursor-pointer focus:ring-blue-500 focus:border-blue-500 border-slate-200"
+                                        >
+                                          {quantityOptions.map((item) => (
+                                            <option
+                                              key={item.value}
+                                              value={item.value}
+                                            >
+                                              {item.label}
+                                            </option>
+                                          ))}
+                                        </select>
+                                      </div>
+
+                                      <button
+                                        onClick={() => onRemoveItem(product.id)}
+                                        type="button"
+                                        className="font-medium text-red-600 hover:text-red-500"
+                                      >
+                                        Remove
+                                      </button>
+                                    </div>
                                   </div>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
 
                     <div className="px-4 py-6 border-t border-t-slate-200 sm:px-6">
-                      <OrderSummary
-                        subtotal={calculatedSubtotal}
-                        cod={5} // hard code for now
-                        tax={8.32} // hard code for now
-                      />
+                      {!isEmptyCart && (
+                        <OrderSummary
+                          subtotal={calculatedSubtotal}
+                          cod={5} // hard code for now
+                          tax={8.32} // hard code for now
+                        />
+                      )}
                       <button
-                        onClick={onCheckout}
+                        onClick={isEmptyCart ? backToShopping : onCheckout}
                         className="flex items-center justify-center w-full px-6 py-3 mt-6 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700"
                       >
-                        Checkout
+                        {isEmptyCart ? "Back to shopping" : "Checkout"}
                       </button>
                     </div>
                   </div>

@@ -112,6 +112,7 @@ export default function MobileNavigation({
                               <div className="bg-gray-100 relativeoverflow-hidden aspect-h-1 aspect-w-1 group-hover:opacity-75">
                                 <Image
                                   fill
+                                  priority
                                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                   src={item.imageSrc}
                                   alt={item.imageAlt}

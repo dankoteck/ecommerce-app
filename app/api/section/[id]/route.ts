@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "~/lib/prisma";
 import queryString from "query-string";
-import { Prisma } from "@prisma/client";
+import { prisma } from "~/lib/prisma";
 
 export async function GET(
   request: Request,
@@ -26,6 +25,17 @@ export async function GET(
       name: true,
       slug: true,
       products: {
+        where: attributes
+          ? {
+              attributes: {
+                some: {
+                  id: {
+                    in: attributes.split(",").map((item) => +item),
+                  },
+                },
+              },
+            }
+          : {},
         orderBy: orderBy
           ? {
               [arrValue[0]]: arrValue[1],
@@ -43,15 +53,7 @@ export async function GET(
           name: true,
           description: true,
           rating: true,
-          attributes: attributes
-            ? {
-                where: {
-                  id: {
-                    in: attributes.split(",").map((item) => +item),
-                  },
-                },
-              }
-            : true,
+          attributes: true,
         },
       },
     },

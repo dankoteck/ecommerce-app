@@ -1,8 +1,19 @@
+"use client";
+
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import { useState } from "react";
+import { getClassNames } from "~/utils";
 
 export default function AdvertisingBanner() {
+  const [showBanner, setShowBanner] = useState(true);
+
   return (
-    <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-indigo-600 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+    <div
+      className={getClassNames(
+        showBanner ? "block" : "hidden",
+        "relative isolate flex items-center gap-x-6 overflow-hidden bg-indigo-600 px-6 py-2.5 sm:px-3.5 sm:before:flex-1"
+      )}
+    >
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <p className="text-sm leading-6 text-white">
           <strong className="font-semibold">Hot Deal</strong>
@@ -24,6 +35,7 @@ export default function AdvertisingBanner() {
       </div>
       <div className="flex justify-end flex-1">
         <button
+          onClick={() => setShowBanner(false)}
           type="button"
           className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
         >
